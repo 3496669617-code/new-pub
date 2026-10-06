@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>安心陪 · 陪诊点单小程序原型</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="safebar" id="safebar"></div>
+
+  <div class="viewport">
+    <!-- ========== 首页 ========== -->
+    <section class="page active" id="page-home">
+      <div class="home-head">
+        <div class="hh-top">
+          <div class="hh-loc" onclick="openAreaSheet()">
+            <svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <span id="hhLoc">上海 · 浦东新区</span>
+            <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <svg class="ic" style="width:22px;height:22px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </div>
+        <div class="hh-search" onclick="toast('搜索医院 / 服务项目')">
+          <svg class="ic" style="width:17px;height:17px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          搜索医院、科室或服务项目
+        </div>
+
+        <div class="hero-card">
+          <h2>给爸妈的安心陪诊</h2>
+          <p>您在手机上点单，陪诊师全程在医院陪同老人。<br>挂号、候诊、检查、取药，逐项可视化反馈。</p>
+          <div class="hero-cta">
+            <button class="btn btn-main" onclick="go('catalog')">立即点单</button>
+            <button class="btn btn-ghost" onclick="go('orders')">我的订单</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll has-tab">
+        <div class="quick-row">
+          <div class="q" onclick="go('catalog')">
+            <div class="q-ic" style="background:#EAF2FF;color:#2B7FFF">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 5v14M5 12h14"/></svg>
+            </div>快速点单
+          </div>
+          <div class="q" onclick="go('orders')">
+            <div class="q-ic" style="background:#FFF1EA;color:#FF7A45">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+            </div>订单进度
+          </div>
+          <div class="q" onclick="go('patient')">
+            <div class="q-ic" style="background:#E8F8F2;color:#00B578">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg>
+            </div>就诊人
+          </div>
+          <div class="q" onclick="toast('客服热线暂未配置')">
+            <div class="q-ic" style="background:#F1EEFF;color:#7B61FF">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="2"/><rect x="17.5" y="13" width="4" height="6" rx="2"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg>
+            </div>在线客服
+          </div>
+        </div>
+
+        <div id="homePatient"></div>
+
+        <div class="sec-title">热门服务包 <span class="more" onclick="go('catalog')">按项点单 <svg class="ic" style="width:12px;height:12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span></div>
+        <div class="pkg-scroll" id="pkgScroll"></div>
+
+        <div class="sec-title">按项点单 · 热门 <span class="more" onclick="go('catalog')">全部 16 项 <svg class="ic" style="width:12px;height:12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span></div>
+        <div id="homeSvc"></div>
+
+        <div class="safety">
+          <svg class="ic" style="width:16px;height:16px;flex:0 0 auto;margin-top:1px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l8 3.5V12c0 5-3.4 8.2-8 9.5-4.6-1.3-8-4.5-8-9.5V6.5L12 3z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div>陪诊师均通过实名认证、健康证与岗前培训；全程录音留档需老人或家属授权，涉及隐私的操作会单独确认。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 点单页 ========== -->
+    <section class="page" id="page-catalog">
+      <div class="navbar">
+        <div class="nav-back" onclick="back()">
+          <svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg>
+        </div>
+        服务点单
+        <div class="nav-extra" id="catalogCount">已选 0 项</div>
+      </div>
+      <div class="cat-bar" id="catBar"></div>
+      <div class="scroll" id="catalogScroll" style="padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))"></div>
+      <div class="cartbar" id="cartbar">
+        <div class="cb-left">
+          <div class="cart-ic-wrap">
+            <svg class="ic" style="width:26px;height:26px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2.5 3h2.6l2.2 11.2a1.6 1.6 0 0 0 1.6 1.3h8.9a1.6 1.6 0 0 0 1.6-1.3L21 7H6"/></svg>
+            <span class="badge-dot" id="cartBadge">0</span>
+          </div>
+          <div class="cb-total">合计 <b id="cartTotal">¥0</b></div>
+        </div>
+        <button class="btn btn-main" onclick="go('confirm')">去下单</button>
+      </div>
+    </section>
+
+    <!-- ========== 确认订单 ========== -->
+    <section class="page" id="page-confirm">
+      <div class="navbar">
+        <div class="nav-back" onclick="back()">
+          <svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg>
+        </div>
+        确认订单
+      </div>
+      <div class="scroll">
+        <div class="card" id="confirmPatient" onclick="go('patient')"></div>
+
+        <div class="card">
+          <div class="form-row" onclick="openHospitalSheet()">
+            <span class="fr-label">就诊医院</span>
+            <div style="flex:1;text-align:right;min-width:0">
+              <div id="fHospitalTxt" style="font-size:14px;color:#B7BDC8;font-weight:600">请选择就诊医院</div>
+              <div id="fHospitalMeta" style="font-size:11px;color:#8A909E;margin-top:4px">来自上海市医院库，可按时段筛选</div>
+            </div>
+            <svg class="ic" style="width:14px;height:14px;color:#A8B0BE" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+          <div style="font-size:11px;color:#8A909E;padding:0 0 12px;margin-top:-6px">服务区域：上海市 · 仅可从上海医院中选择</div>
+          <div class="form-row">
+            <span class="fr-label">就诊科室</span>
+            <input id="fDept" value="" placeholder="如 心内科 / 内分泌科">
+          </div>
+          <div class="form-row">
+            <span class="fr-label">陪同电话</span>
+            <input id="fPhone" value="" placeholder="陪诊师联系用">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pick-block">
+            <div class="pick-title">就诊日期</div>
+            <div class="pick-chips" id="dateChips"></div>
+          </div>
+          <div class="pick-block">
+            <div class="pick-title">到院时间段</div>
+            <div class="pick-chips" id="timeChips"></div>
+          </div>
+          <div class="pick-block">
+            <div class="pick-title">老人行动能力（影响陪诊师配置）</div>
+            <div class="pick-chips" id="mobilityChips"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">服务清单</div>
+          <div id="confirmSvcList"></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px">增值服务（建议勾选）</div>
+          <div id="addonList"></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700">给陪诊师的嘱托</div>
+          <textarea class="textarea" id="fNote" placeholder="例如：老人耳朵背，请大声说话；记不住药名，需要写下来…"></textarea>
+          <div class="qk-tags" id="qkTags"></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:8px">费用明细</div>
+          <div id="feeDetail"></div>
+        </div>
+      </div>
+      <div class="submitbar">
+        <div class="sb-price">
+          <div class="sb-label">合计</div>
+          <div class="sb-num" id="confirmTotal">¥0</div>
+        </div>
+        <button class="btn btn-main" onclick="toConfirmPay()">提交订单</button>
+      </div>
+    </section>
+
+    <!-- ========== 收银台 ========== -->
+    <section class="page" id="page-pay">
+      <div class="navbar">
+        <div class="nav-back" onclick="back()">
+          <svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg>
+        </div>
+        收银台
+      </div>
+      <div class="scroll">
+        <div class="pay-amount">
+          <div class="pa-label">需支付金额</div>
+          <div class="pa-num" id="payAmount">¥0.00</div>
+        </div>
+        <div class="pay-methods">
+          <div class="pay-m" onclick="pickPay(this)">
+            <div class="pm-ic" style="background:#07C160">微</div>
+            <div class="pm-name">微信支付<div class="pm-sub">推荐 · 支持零钱与银行卡</div></div>
+            <div class="radio on"><i></i></div>
+          </div>
+          <div class="pay-m" onclick="pickPay(this)">
+            <div class="pm-ic" style="background:#FFB020">余</div>
+            <div class="pm-name">平台余额<div class="pm-sub">可用 ¥0.00</div></div>
+            <div class="radio"><i></i></div>
+          </div>
+          <div class="pay-m" onclick="pickPay(this)">
+            <div class="pm-ic" style="background:#3B6EF5">卡</div>
+            <div class="pm-name">企业关爱卡<div class="pm-sub">工会福利账户付款</div></div>
+            <div class="radio"><i></i></div>
+          </div>
+        </div>
+        <div class="coupon-line" onclick="toast('暂无可用优惠券')">
+          <span>优惠券</span>
+          <span class="cl-right" style="color:#B4BAC6">暂无可用 <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <div style="margin:14px 16px;font-size:11.5px;color:#A8B0BE;line-height:1.8">
+          支付后陪诊师将在 30 分钟内接单。服务开始前 2 小时可免费取消，服务中可随时联系客服介入。
+        </div>
+      </div>
+      <div class="submitbar">
+        <button class="btn btn-main" style="flex:1;height:48px;font-size:15.5px" onclick="doPay()">确认支付</button>
+      </div>
+    </section>
+
+    <!-- ========== 支付成功 ========== -->
+    <section class="page" id="page-success">
+      <div class="result-wrap">
+        <div class="res-icon">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg>
+        </div>
+        <h2>支付成功</h2>
+        <div class="res-sub">已通知陪诊师，正在为您匹配<br>预计 <b style="color:#2B7FFF">30 分钟内</b> 完成接单</div>
+        <div class="res-box">
+          <div class="rb-row"><span>订单编号</span><b id="sucOrderNo">—</b></div>
+          <div class="rb-row"><span>就诊人</span><b id="sucPatient">—</b></div>
+          <div class="rb-row"><span>就诊时间</span><b id="sucTime">—</b></div>
+          <div class="rb-row"><span>实付金额</span><b style="color:#FF4D3A" id="sucAmount">—</b></div>
+        </div>
+        <div class="res-btns">
+          <button class="btn btn-ghost" onclick="go('home')">返回首页</button>
+          <button class="btn btn-main" onclick="openOrderDetail()">查看订单</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 订单详情 ========== -->
+    <section class="page" id="page-detail">
+      <div class="od-head">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
+          <div class="nav-back" style="position:static;transform:none;margin:0;color:#fff" onclick="back()">
+            <svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg>
+          </div>
+          <span style="font-size:14px;opacity:.9">订单详情</span>
+        </div>
+        <div class="odh-st"><span id="odStatus">等待陪诊师接单</span></div>
+        <div class="odh-desc" id="odDesc">订单已提交，正在匹配附近的专业陪诊师</div>
+        <div class="odh-eta">
+          <svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span id="odEta">预计 30 分钟内完成接单</span>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="timeline" id="timeline"></div>
+
+        <div class="expert-card" id="expertCard" style="display:none">
+          <div class="ec-avatar" style="background:#EEF4FF;color:#2B7FFF">
+            <svg class="ic" style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg>
+            <div class="ec-verified"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg></div>
+          </div>
+          <div class="ec-body">
+            <div class="ec-name">接单陪诊师 <span class="tag green">已实名</span></div>
+            <div class="ec-meta"><span id="expertHospital">常驻医院：待派单</span></div>
+            <div class="ec-meta" style="margin-top:5px"><span class="tag blue">护士资格证</span><span class="tag blue">健康证</span><span class="tag gray">岗前培训合格</span></div>
+          </div>
+          <button class="ec-call" onclick="toast('正在呼叫陪诊师')">
+            <svg class="ic" style="width:19px;height:19px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 16.5v2.8a1.8 1.8 0 0 1-2 1.8 17.6 17.6 0 0 1-7.7-2.7 17.3 17.3 0 0 1-5.3-5.3A17.6 17.6 0 0 1 3.3 5.4 1.8 1.8 0 0 1 5.1 3.4h2.8a1.8 1.8 0 0 1 1.8 1.5c.1.9.35 1.8.7 2.6a1.8 1.8 0 0 1-.4 1.9l-1.2 1.2a14 14 0 0 0 5.3 5.3l1.2-1.2a1.8 1.8 0 0 1 1.9-.4c.8.35 1.7.6 2.6.7a1.8 1.8 0 0 1 1.5 1.8z"/></svg>
+          </button>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">服务清单</div>
+          <div id="detailSvcList"></div>
+          <div class="divider"></div>
+          <div class="form-row" style="padding:6px 0"><span class="fr-label">就诊人</span><span class="fr-val" id="dPatient">—</span></div>
+          <div class="form-row" style="padding:6px 0"><span class="fr-label">就诊医院</span><span class="fr-val" id="dHospital">—</span></div>
+          <div class="form-row" style="padding:6px 0"><span class="fr-label">到院时间</span><span class="fr-val" id="dTime">—</span></div>
+          <div class="form-row" style="padding:6px 0"><span class="fr-label">订单编号</span><span class="fr-val" id="dOrderNo">—</span></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px">服务反馈</div>
+          <div id="feedbackBox" style="font-size:12.5px;color:#8A909E;line-height:1.9;padding-top:6px">
+            服务完成后，陪诊师会上传现场照片与结算单据，并发送 1 分钟语音汇报。
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-bar" id="demoBar">
+        <svg class="ic" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg>
+        原型演示：手动推进服务节点
+        <button class="btn" onclick="advanceStep()">推进下一环节</button>
+      </div>
+
+      <div class="od-actions">
+        <button class="btn btn-ghost" onclick="toast('客服已介入，稍后会有专人联系您')">联系客服</button>
+        <button class="btn btn-main" onclick="toast('已开启老人端大字进度卡，将推送到老人微信')">推送给老人</button>
+      </div>
+    </section>
+
+    <!-- ========== 订单列表 ========== -->
+    <section class="page" id="page-orders">
+      <div class="navbar plain" style="background:#fff">我的订单</div>
+      <div class="seg" id="orderSeg"></div>
+      <div class="scroll has-tab" id="ordersScroll"></div>
+    </section>
+
+    <!-- ========== 我的 ========== -->
+    <section class="page" id="page-mine">
+      <div class="scroll has-tab" style="padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))">
+        <div class="mine-head">
+          <div class="mine-user">
+            <div class="mu-av">
+              <svg class="ic" style="width:27px;height:27px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg>
+            </div>
+            <div>
+              <div class="mu-name">微信用户</div>
+              <div class="mu-sub">未绑定手机号 · 已添加 <span id="muPatientCount">0</span> 位就诊人</div>
+            </div>
+          </div>
+        </div>
+        <div class="mine-stats">
+          <div class="ms"><b id="mOrderCount">0</b><span>进行中</span></div>
+          <div class="ms"><b id="mDoneCount">0</b><span>已完成</span></div>
+          <div class="ms"><b id="mCouponCount">0</b><span>优惠券</span></div>
+        </div>
+        <div class="menu-list">
+          <div class="menu-item" onclick="go('orders')">
+            <div class="mi-ic" style="background:#EAF2FF;color:#2B7FFF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
+            <span class="mi-txt">我的订单</span>
+            <span class="mi-right">全部 <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="menu-item" onclick="go('patient')">
+            <div class="mi-ic" style="background:#E8F8F2;color:#00B578"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg></div>
+            <span class="mi-txt">就诊人管理</span>
+            <span class="mi-right"><span id="mPatientCount">0 位</span> <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="menu-item" onclick="toast('暂无归档记录')">
+            <div class="mi-ic" style="background:#FFF1EA;color:#FF7A45"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></div>
+            <span class="mi-txt">健康档案与单据</span>
+            <span class="mi-right"><span id="mRecordCount">0 份</span> <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="menu-item" onclick="toast('暂无可用优惠券')">
+            <div class="mi-ic" style="background:#F1EEFF;color:#7B61FF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 1 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 1 0 0-4V8z"/></svg></div>
+            <span class="mi-txt">优惠券</span>
+            <span class="mi-right">0 张可用 <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="menu-item" onclick="toast('客服热线暂未配置')">
+            <div class="mi-ic" style="background:#F1F3F7;color:#6C7480"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="2"/><rect x="17.5" y="13" width="4" height="6" rx="2"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg></div>
+            <span class="mi-txt">客服与投诉</span>
+            <span class="mi-right"><svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="menu-list" style="margin-top:0">
+          <div class="menu-item" onclick="toast('已开启：订单节点推送到微信消息')">
+            <div class="mi-ic" style="background:#E8F8F2;color:#00B578"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+            <span class="mi-txt">消息通知设置</span>
+            <span class="mi-right">已开启 <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:#B4BAC6;padding:6px 0 18px;line-height:1.8">
+          安心陪 v1.0.0<br>服务由持证陪诊师提供 · 全程可追溯
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 就诊人管理 ========== -->
+    <section class="page" id="page-patient">
+      <div class="navbar">
+        <div class="nav-back" onclick="back()">
+          <svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg>
+        </div>
+        就诊人管理
+      </div>
+      <div class="scroll" id="patientScroll"></div>
+    </section>
+  </div>
+
+  <!-- TabBar -->
+  <nav class="tabbar" id="tabbar">
+    <div class="tab on" data-tab="home" onclick="go('home')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10.5L12 3l9 7.5V21H14v-6h-4v6H3z"/></svg><span>首页</span>
+    </div>
+    <div class="tab" data-tab="orders" onclick="go('orders')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span>订单</span>
+      <span class="badge-dot" id="tabBadge" style="display:none">1</span>
+    </div>
+    <div class="tab" data-tab="mine" onclick="go('mine')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20c0-3.7 3.4-6.2 7.5-6.2s7.5 2.5 7.5 6.2"/></svg><span>我的</span>
+    </div>
+  </nav>
+
+  <!-- 弹层 -->
+  <div class="sheet-mask" id="sheetMask" onclick="closeSheet()"></div>
+  <div class="sheet" id="sheet"><h3 id="sheetTitle">选择</h3><div id="sheetBody"></div></div>
+  <div class="toast" id="toast"></div>
+  <div class="loading" id="loading"><div class="spinner"></div><span id="loadingText">正在支付…</span></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
